@@ -12,7 +12,7 @@
     </tr>
 </table>
 <table>
-    <tr class="hoverable" *ngFor="let cur of rikishis.get(curSelected)">
+    <tr class="hoverable" (click)="selectRikishi(cur)" *ngFor="let cur of rikishis.get(curSelected)">
         <td class="avatarContainer"><img class="avatar" src="{{cur.avatar}}"></td>
         <td class="rikishiLabel" *ngIf="cur.filled">
             <div>{{cur.name}}</div>

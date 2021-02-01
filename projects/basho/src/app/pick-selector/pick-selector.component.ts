@@ -52,7 +52,16 @@ export class PickSelectorComponent implements OnInit {
 
   selectCategory(category: string): void {
     console.log(`Selected Category ${category}`);
-    this.curSelected = category;
+    if(this.curSelected != category) {
+      this.curSelected = category;
+    } else {
+      this.curSelected = "";
+    }
   }
 
+  selectRikishi(rikishi: Rikishi): void {
+    console.log(`Select Rikishi`);
+    this.selected.set(this.curSelected, rikishi);
+    this.curSelected="";
+  }
 }

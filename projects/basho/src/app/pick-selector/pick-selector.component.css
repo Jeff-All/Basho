@@ -11,6 +11,7 @@ table {
 
 .pickYourRikishi {
     height: 35px;
+    width: 135px;
     text-align: center;
     border: 1px solid black;
 }
@@ -29,6 +30,7 @@ table {
 
 .rikishiLabel {
     height: 35px;
+    width: 100px;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     border-right: 1px solid black;
@@ -52,4 +54,5 @@ table {
 
 .selected {
     background-color: blue;
+    cursor: pointer;
 }
