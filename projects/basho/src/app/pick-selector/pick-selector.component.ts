@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DefaultRikishi, Rikishi } from '../rikishi';
+import { RikishiService } from '../rikishi.service';
 
 @Component({
   selector: 'pick-selector',
@@ -17,37 +18,12 @@ export class PickSelectorComponent implements OnInit {
     ["E", DefaultRikishi]
   ]);
 
-  rikishis: Map<string,Rikishi[]> = new Map([
-    ["A",[
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi A", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi B", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi C", rank:"Ozeki" }
-    ]],
-    ["B",[
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi D", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi E", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi F", rank:"Ozeki" }
-    ]],
-    ["C",[
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi G", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi H", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi I", rank:"Ozeki" }
-    ]],
-    ["D",[
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi J", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi K", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi L", rank:"Ozeki" }
-    ]],
-    ["E",[
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi M", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi N", rank:"Ozeki" },
-      { filled: true, avatar:'/assets/default_avatar.jpg', name:"Rikishi O", rank:"Ozeki" }
-    ]]
-  ]);
+  rikishis: Map<string,Rikishi[]> = new Map();
 
-  constructor() { }
+  constructor(private rikishiService: RikishiService) { }
 
   ngOnInit(): void {
+    this.rikishis = this.rikishiService.getRikishi();
   }
 
   selectCategory(category: string): void {
