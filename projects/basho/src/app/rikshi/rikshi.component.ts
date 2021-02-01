@@ -7,6 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class RikshiComponent implements OnInit {
   @Input() name = 'Default Rikshi';
+  @Input() avatar = '/assets/default_avatar.jpg';
+  @Input() rank = 'Ozeki';
 
   constructor() { }
 
