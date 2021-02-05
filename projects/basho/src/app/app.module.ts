@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AuthModule } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PickSelectorComponent } from './pick-selector/pick-selector.component';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
 
-export const test = ["A","B","C"]
+import { environment } from './../environments/environment';
 
 @NgModule({
   declarations: [
@@ -18,13 +21,23 @@ export const test = ["A","B","C"]
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     AuthModule.forRoot({
-      domain: 'jefall.auth0.com',
-      clientId: 'aVBuQ4KDAaXgOLFi4M88FCTx3yAy3qLk'
+      domain: `${environment.auth.domain}`,
+      clientId: `${environment.auth.clientId}`,
+      httpInterceptor: {
+        allowedList: [`${environment.dev.serverUrl}/private/test`],
+      },
     }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

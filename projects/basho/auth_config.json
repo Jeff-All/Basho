@@ -1,0 +1,6 @@
+{
+    "domain": "jefall.auth0.com",
+    "clientId": "aVBuQ4KDAaXgOLFi4M88FCTx3yAy3qLk",
+    "audience": "https://jeffall.com/dohyo",
+    "serverUrl": "http://localhost:8000"
+}
