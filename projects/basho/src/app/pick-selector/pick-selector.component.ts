@@ -1,29 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { DefaultRikishi, Rikishi } from '../rikishi';
-import { RikishiService } from '../rikishi.service';
+import { Rikishi } from '../models/rikishi';
+import { RikishiService } from '../services/rikishi.service';
+
+interface selectedRikishi {
+  rikishi?: Rikishi
+}
 
 @Component({
   selector: 'pick-selector',
   templateUrl: './pick-selector.component.html',
   styleUrls: ['./pick-selector.component.css']
 })
+
 export class PickSelectorComponent implements OnInit {
   curSelected: string = "";
 
-  selected: Map<string,Rikishi> = new Map([
-    ["A", DefaultRikishi],
-    ["B", DefaultRikishi],
-    ["C", DefaultRikishi],
-    ["D", DefaultRikishi],
-    ["E", DefaultRikishi]
+  selected: Map<string,selectedRikishi> = new Map([
+    ["A", <selectedRikishi>({})],
+    ["B", <selectedRikishi>({})],
+    ["C", <selectedRikishi>({})],
+    ["D", <selectedRikishi>({})],
+    ["E", <selectedRikishi>({})]
   ]);
 
-  rikishis: Map<string,Rikishi[]> = new Map();
+  rikishis: Map<string,Rikishi[]> = new Map<string,Rikishi[]>()
 
   constructor(private rikishiService: RikishiService) { }
 
   ngOnInit(): void {
-    this.rikishis = this.rikishiService.getRikishi();
+    this.rikishiService.getCategorizedRikishi()
+    .subscribe(rikishis => {
+      console.log("rikishis returned:", rikishis)
+      this.rikishis = rikishis})
   }
 
   selectCategory(category: string): void {
@@ -36,8 +44,9 @@ export class PickSelectorComponent implements OnInit {
   }
 
   selectRikishi(rikishi: Rikishi): void {
-    console.log(`Select Rikishi`);
-    this.selected.set(this.curSelected, rikishi);
+    console.log(`Select Rikishi ${typeof rikishi}`, rikishi, this.selected.get(this.curSelected));
+    var selected = this.selected.get(this.curSelected)
+    selected!.rikishi = rikishi
     this.curSelected="";
   }
 }

@@ -3,20 +3,20 @@
 <table>
     <tr [ngClass]="{selected: cur.key===curSelected, hoverable: cur.key!==curSelected}" (click)="selectCategory(cur.key)" *ngFor="let cur of selected | keyvalue" >
         <td class="categoryLabel" >{{cur.key}}</td>
-        <td class="pickYourRikishi" colspan="2" *ngIf="!cur.value.filled">Pick Your Rikishi</td>
-        <td class="avatarContainer" *ngIf="cur.value.filled"><img class="avatar" src="{{cur.value.avatar}}"></td>
-        <td class="rikishiLabel" *ngIf="cur.value.filled">
-            <div>{{cur.value.name}}</div>
-            <div>{{cur.value.rank}}</div>
+        <td class="pickYourRikishi" colspan="2" *ngIf="cur.value.rikishi===undefined">Pick Your Rikishi</td>
+        <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
+        <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
+            <div>{{cur.value.rikishi.Name}}</div>
+            <div>{{cur.value.rikishi.Rank}}</div>
         </td>
     </tr>
 </table>
-<table>
+<table *ngIf="rikishis!=undefined">
     <tr class="hoverable" (click)="selectRikishi(cur)" *ngFor="let cur of rikishis.get(curSelected)">
-        <td class="avatarContainer"><img class="avatar" src="{{cur.avatar}}"></td>
-        <td class="rikishiLabel" *ngIf="cur.filled">
-            <div>{{cur.name}}</div>
-            <div>{{cur.rank}}</div>
+        <td class="avatarContainer"><img class="avatar" src="{{cur.Avatar}}"></td>
+        <td class="rikishiLabel">
+            <div>{{cur.Name}}</div>
+            <div>{{cur.Rank}}</div>
         </td>
     </tr>
 </table>
