@@ -24,12 +24,9 @@ export class RikishiService {
     ).pipe(
       map( response => {
         var categorized = new Map<string, Rikishi[]>()
-        console.log(`response ${typeof response}:`,response);
         for(let[key,value] of Object.entries<any>(response)) {
-          console.log(`${key}:${typeof value}`)
           var array = new Array<Rikishi>()
           value.forEach((element: any) => {
-            console.log(`${typeof element}`);
             array.push(<Rikishi>element)
           });
           categorized.set(key,array)

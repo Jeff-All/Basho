@@ -22,7 +22,6 @@ import { environment } from './../environments/environment';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     AuthModule.forRoot({
       domain: `${environment.auth.domain}`,
       clientId: `${environment.auth.clientId}`,
