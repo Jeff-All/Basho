@@ -13,7 +13,7 @@
         </tr>
     </table>
     <ng-container *ngIf="rikishis!=undefined && curSelected!=''">
-        <h1>Pick Rikishi for Group {{curSelected}}</h1>
+        <h1>Group {{curSelected}}</h1>
         <table>
             <tr class="hoverable" (click)="selectRikishi(cur)" *ngFor="let cur of rikishis.get(curSelected)">
                 <td class="avatarContainer"><img class="avatar" src="{{cur.Avatar}}"></td>
