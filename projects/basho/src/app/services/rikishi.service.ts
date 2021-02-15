@@ -17,6 +17,21 @@ export class RikishiService {
     private error: ErrorService
   ) {}
 
+  getTeam() : Observable<Map<string, Rikishi>> {
+    return this.http.get<any>(`${environment.dev.serverUrl}/teams`)
+    .pipe(
+      catchError(this.error.handleError<any>(<any>({})))
+    ).pipe(
+      map( response => {
+        var team = new Map<string, Rikishi>()
+        for(let[key,value] of Object.entries<any>(response)) {
+          team.set(key,<Rikishi>value)
+        }
+        return team
+      })
+    )
+  }
+
   getCategorizedRikishi(): Observable<Map<string,Rikishi[]>> {
     return this.http.get<any>(`${environment.dev.serverUrl}/rikishis/categorized`)
     .pipe(

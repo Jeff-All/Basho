@@ -26,7 +26,10 @@ import { environment } from './../environments/environment';
       domain: `${environment.auth.domain}`,
       clientId: `${environment.auth.clientId}`,
       httpInterceptor: {
-        allowedList: [`${environment.dev.serverUrl}/rikishis/categorized`],
+        allowedList: [
+          `${environment.dev.serverUrl}/teams`,
+          `${environment.dev.serverUrl}/rikishis/categorized`
+        ],
       },
     }),
   ],

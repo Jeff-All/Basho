@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Rikishi } from '../models/rikishi';
+import { DefaultRikishi, Rikishi } from '../models/rikishi';
 import { RikishiService } from '../services/rikishi.service';
 
 interface selectedRikishi {
@@ -28,6 +28,15 @@ export class PickSelectorComponent implements OnInit {
   constructor(private rikishiService: RikishiService) { }
 
   ngOnInit(): void {
+    this.rikishiService.getTeam()
+    .subscribe(rikishis => {
+      console.log("team returned:", rikishis)
+      rikishis.forEach((value: Rikishi, key: string) => {
+        console.log(`team(${{key}}):`,value)
+        var cur = this.selected.get(key) ?? <selectedRikishi>{}
+        cur.rikishi = value
+      })
+    })
     this.rikishiService.getCategorizedRikishi()
     .subscribe(rikishis => {
       console.log("rikishis returned:", rikishis)

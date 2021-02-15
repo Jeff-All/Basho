@@ -1,7 +1,10 @@
 <ng-container *ngIf="this.authenticationHasBeenDetermined else waiting">
     <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+        <div *ngIf="auth.user$ | async as user">
+            <img src="{{user.picture}}">
+        </div>
         <button (click)="auth.logout({ returnTo: document.location.origin })">
-            Log out
+            Log out - <div *ngIf="auth.user$ | async as user">{{user.name}}</div>
         </button>
     </ng-container>
     
