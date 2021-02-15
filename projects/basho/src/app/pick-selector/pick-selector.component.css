@@ -13,6 +13,11 @@ tr {
     width: 100%;
 }
 
+.saveButton {
+    width: 50px;
+    margin-right: 90px;
+    margin-left: 90px;
+}
 
 .center {
     display: block;

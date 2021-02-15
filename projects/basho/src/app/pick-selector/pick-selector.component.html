@@ -1,6 +1,7 @@
 <div class="center">
 <h1>Pick your Team</h1>
-<ng-container *ngIf="this.teamLoaded && this.rikishiLoaded else loading">
+<h1>[{{this.changed}}]</h1>
+<ng-container *ngIf="this.ready else waiting">
     <table>
         <tr [ngClass]="{selected: cur.key===curSelected, hoverable: cur.key!==curSelected}" (click)="selectCategory(cur.key)" *ngFor="let cur of selected | keyvalue" >
             <td class="categoryLabel" >{{cur.key}}</td>
@@ -12,7 +13,7 @@
             </td>
         </tr>
     </table>
-    <ng-container *ngIf="rikishis!=undefined && curSelected!=''">
+    <ng-container *ngIf="rikishis!=undefined && curSelected!='' else save">
         <h1>Group {{curSelected}}</h1>
         <table>
             <tr class="hoverable" (click)="selectRikishi(cur)" *ngFor="let cur of rikishis.get(curSelected)">
@@ -24,8 +25,11 @@
             </tr>
         </table>
     </ng-container>
+    <ng-template #save>
+        <button *ngIf="this.changed" (click)="saveTeam()" class="saveButton">Save</button>
+    </ng-template>
 </ng-container>
-<ng-template #loading>
+<ng-template #waiting>
     <img class="loading" src="/assets/loading.gif">
 </ng-template>
 </div>

@@ -17,6 +17,27 @@ export class RikishiService {
     private error: ErrorService
   ) {}
 
+  saveTeam(team: Map<string,Rikishi>) : Observable<boolean> {
+    console.log("saveTeam:",team.entries())
+    
+    var body: string = "{";
+    var first: boolean = true;
+    Array.from(team.entries()).forEach(element => {
+      if(!first) {
+        body += ",";
+      } else {
+        first = false;
+      }
+      body += `"${element[0]}":${element[1].ID}`
+    });
+    body += "}";
+    console.log("saveTeam:",body);
+    return this.http.put<Map<string,Rikishi>>(`${environment.dev.serverUrl}/teams`, body)
+     .pipe(
+      catchError(this.error.handleError<any>(<any>({})))
+     )
+  }
+
   getTeam() : Observable<Map<string, Rikishi>> {
     return this.http.get<any>(`${environment.dev.serverUrl}/teams`)
     .pipe(

@@ -13,9 +13,19 @@ interface selectedRikishi {
 })
 
 export class PickSelectorComponent implements OnInit {
+  ready: boolean = false;
+  changed: boolean = false;
   curSelected: string = "";
   teamLoaded: boolean = false;
   rikishiLoaded: boolean = false;
+
+  team: Map<string,selectedRikishi> = new Map([
+    ["A", <selectedRikishi>({})],
+    ["B", <selectedRikishi>({})],
+    ["C", <selectedRikishi>({})],
+    ["D", <selectedRikishi>({})],
+    ["E", <selectedRikishi>({})]
+  ]);
 
   selected: Map<string,selectedRikishi> = new Map([
     ["A", <selectedRikishi>({})],
@@ -32,19 +42,63 @@ export class PickSelectorComponent implements OnInit {
   ngOnInit(): void {
     this.rikishiService.getTeam()
     .subscribe(rikishis => {
-      console.log("team returned:", rikishis)
-      this.teamLoaded = true;
+      console.log("team returned:", rikishis);
       rikishis.forEach((value: Rikishi, key: string) => {
-        console.log(`team(${{key}}):`,value)
-        var cur = this.selected.get(key) ?? <selectedRikishi>{}
-        cur.rikishi = value
+        console.log(`team(${{key}}):`,value);
+        var curTeam = this.team.get(key) ?? <selectedRikishi>{};
+        var curSelected = this.selected.get(key) ?? <selectedRikishi>{};
+        curTeam.rikishi = value;
+        curSelected.rikishi = value;
       })
+      this.teamLoaded = true;
+      this.determineWaiting();
     })
     this.rikishiService.getCategorizedRikishi()
     .subscribe(rikishis => {
-      this.rikishiLoaded = true;
+      
       console.log("rikishis returned:", rikishis)
-      this.rikishis = rikishis})
+      this.rikishis = rikishis;
+      this.rikishiLoaded = true;
+      this.determineWaiting();
+    })
+  }
+
+  determineWaiting() {
+    if(this.rikishiLoaded && this.teamLoaded) {
+      this.ready = true;
+    }
+    console.log(`determineWaiting(rikishi=${this.rikishiLoaded},team=${this.teamLoaded}):`,this.ready)
+  }
+
+  saveTeam(): void {
+    this.ready = false;
+    var map: Map<string,Rikishi> = new Map<string,Rikishi>();
+    this.selected.forEach((value: selectedRikishi, key: string) => {
+      if(value.rikishi === undefined) {
+        throw new Error(`unable to save, rikishi in category ${key} was undefined`);
+      }
+      var cur: Rikishi = value.rikishi ?? <Rikishi>{};
+      map.set(key,cur)
+    })
+    this.rikishiService.saveTeam(map)
+    .subscribe(bool => {
+      console.log("team saved:", bool);
+      this.ready = true;
+    })
+  }
+
+  determineIfChanged(): boolean {
+    var dif:boolean = false;
+    this.team.forEach((value: selectedRikishi, key: string) => {
+      var curSelected = this.selected.get(key) ?? <selectedRikishi>{}
+      if(curSelected.rikishi?.ID !== value.rikishi?.ID) {
+        dif = true;
+        console.log("determineIfChanged: DIF: selected:", curSelected.rikishi)
+        console.log("determineIfChanged: DIF: team:", value.rikishi)
+      }
+    })
+    this.changed = dif;
+    return dif;
   }
 
   selectCategory(category: string): void {
@@ -61,5 +115,6 @@ export class PickSelectorComponent implements OnInit {
     var selected = this.selected.get(this.curSelected)
     selected!.rikishi = rikishi
     this.curSelected="";
+    this.determineIfChanged()
   }
 }
