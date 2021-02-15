@@ -1,6 +1,5 @@
 <div class="center">
 <h1>Pick your Team</h1>
-<h1>[{{this.changed}}]</h1>
 <ng-container *ngIf="this.ready else waiting">
     <table>
         <tr [ngClass]="{selected: cur.key===curSelected, hoverable: cur.key!==curSelected}" (click)="selectCategory(cur.key)" *ngFor="let cur of selected | keyvalue" >
@@ -26,7 +25,11 @@
         </table>
     </ng-container>
     <ng-template #save>
-        <button *ngIf="this.changed" (click)="saveTeam()" class="saveButton">Save</button>
+        <div class="buttons">
+            <button *ngIf="this.changed" (click)="resetTeam()" class="saveButton">Reset</button>
+            <div class="buttonSpacer"></div>
+            <button *ngIf="this.changed" (click)="saveTeam()" class="saveButton">Save</button>
+        </div>
     </ng-template>
 </ng-container>
 <ng-template #waiting>

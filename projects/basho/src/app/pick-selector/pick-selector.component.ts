@@ -70,6 +70,17 @@ export class PickSelectorComponent implements OnInit {
     console.log(`determineWaiting(rikishi=${this.rikishiLoaded},team=${this.teamLoaded}):`,this.ready)
   }
 
+  resetTeam(): void {
+    this.team.forEach((value: selectedRikishi, key: string) => {
+      var cur :any = this.selected.get(key);
+      if(cur === undefined) {
+        throw new Error(`unable to update team, rikishi in category ${key} was undefined`);
+      }
+      cur.rikishi = value.rikishi
+      this.determineIfChanged();
+    });
+  }
+
   saveTeam(): void {
     this.ready = false;
     var map: Map<string,Rikishi> = new Map<string,Rikishi>();
@@ -83,6 +94,14 @@ export class PickSelectorComponent implements OnInit {
     this.rikishiService.saveTeam(map)
     .subscribe(bool => {
       console.log("team saved:", bool);
+      this.selected.forEach((value: selectedRikishi, key: string) => {
+        var cur :any = this.team.get(key);
+        if(cur === undefined) {
+          throw new Error(`unable to update team, rikishi in category ${key} was undefined`);
+        }
+        cur.rikishi = value.rikishi
+      });
+      this.determineIfChanged();
       this.ready = true;
     })
   }
