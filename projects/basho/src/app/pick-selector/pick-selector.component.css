@@ -1,5 +1,31 @@
 table {
     border-collapse: collapse;
+    width: 150px;
+    margin-right: 40px;
+    margin-left: 40px;
+}
+
+h1 {
+    text-align: center;
+}
+
+tr {
+    width: 100%;
+}
+
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 230px;
+}
+
+.loading {
+    width: 150px;
+    height: 150px;
+    margin-right: 40px;
+    margin-left: 40px;
 }
 
 .categoryLabel {

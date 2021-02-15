@@ -14,6 +14,8 @@ interface selectedRikishi {
 
 export class PickSelectorComponent implements OnInit {
   curSelected: string = "";
+  teamLoaded: boolean = false;
+  rikishiLoaded: boolean = false;
 
   selected: Map<string,selectedRikishi> = new Map([
     ["A", <selectedRikishi>({})],
@@ -31,6 +33,7 @@ export class PickSelectorComponent implements OnInit {
     this.rikishiService.getTeam()
     .subscribe(rikishis => {
       console.log("team returned:", rikishis)
+      this.teamLoaded = true;
       rikishis.forEach((value: Rikishi, key: string) => {
         console.log(`team(${{key}}):`,value)
         var cur = this.selected.get(key) ?? <selectedRikishi>{}
@@ -39,6 +42,7 @@ export class PickSelectorComponent implements OnInit {
     })
     this.rikishiService.getCategorizedRikishi()
     .subscribe(rikishis => {
+      this.rikishiLoaded = true;
       console.log("rikishis returned:", rikishis)
       this.rikishis = rikishis})
   }
