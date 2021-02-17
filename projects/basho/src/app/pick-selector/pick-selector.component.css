@@ -49,6 +49,10 @@ tr {
     margin-left: 40px;
 }
 
+.selected > .categoryLabel {
+    border-right: 1px solid white;
+}
+
 .categoryLabel {
     height: 35px;
     width: 25px;
@@ -60,7 +64,7 @@ tr {
     height: 35px;
     width: 135px;
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid rgb(255, 255, 255);
 }
 
 .avatarContainer {
@@ -68,6 +72,14 @@ tr {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     border-left: 1px solid black;
+}
+.selected > .avatarContainer {
+    border-left: 1px solid white;
+}
+
+.selected > .avatarContainer > .avatar {
+
+    filter:invert(1);
 }
 
 .avatar {
@@ -88,7 +100,8 @@ tr {
 }
 
 .hoverable:hover {
-    background-color: rgba(0, 0, 255, 0.165);
+    background-color: rgba(0, 0, 0, 0.165);
+    color: white;
 }
 
 table {
@@ -100,6 +113,8 @@ table {
 }
 
 .selected {
-    background-color: blue;
+    background-color: rgb(0, 0, 0);
+    color: white;
     cursor: pointer;
+    border-color: white;
 }
