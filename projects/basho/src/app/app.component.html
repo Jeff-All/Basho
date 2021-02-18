@@ -1,12 +1,22 @@
 <div class="masterContainer">
     <div class="mainHeaderContainer">
         <h1 class="mainHeader">March Fantasy Basho</h1>
-    </div>
-    <div class="menuContainer">
         <app-auth-button></app-auth-button>
     </div>
+    <div class="menuContainer">
+        <div class="menuSubcontainer">
+            <div class="verticalLine">-</div>
+            <div class="menuItem">Your Team</div>
+            <div class="verticalLine">-</div>
+            <div class="menuItem">Leader Board</div>
+            <div class="verticalLine">-</div>
+            <div class="menuItem">Daily Picks</div>
+            <div class="verticalLine">-</div>
+        </div>
+    </div>
     <div class="mainContainer">
-        
         <pick-selector *ngIf="auth.isAuthenticated$ | async"></pick-selector>
+    </div>
+    <div class="footerContainer">
     </div>
 </div>

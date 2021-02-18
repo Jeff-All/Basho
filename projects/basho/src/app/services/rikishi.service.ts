@@ -46,6 +46,7 @@ export class RikishiService {
       map( response => {
         var team = new Map<string, Rikishi>()
         for(let[key,value] of Object.entries<any>(response)) {
+          value.Rank = "Maegashira 17";
           team.set(key,<Rikishi>value)
         }
         return team
@@ -63,6 +64,7 @@ export class RikishiService {
         for(let[key,value] of Object.entries<any>(response)) {
           var array = new Array<Rikishi>()
           value.forEach((element: any) => {
+            element.Rank = "Maegashira 17";
             array.push(<Rikishi>element)
           });
           categorized.set(key,array)

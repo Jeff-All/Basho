@@ -1,8 +1,6 @@
 table {
     border-collapse: collapse;
-    width: 150px;
-    margin-right: 40px;
-    margin-left: 40px;
+    width: 620px;
 }
 
 h1 {
@@ -18,16 +16,26 @@ tr {
     display: inline-block;
 }
 
-.buttonSpacer{
-    display: inline-block;
-    width: 10px;
+.buttons {
+    width: 130px;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.buttons {
-    width: 110px;
-    margin-top: 5px;
-    margin-left: 60px;
-    margin-right: 60px;
+.button {
+    cursor: pointer;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    width: 50px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: rgba(0, 0, 0, 0.138);
 }
 
 .saveButton {
@@ -39,7 +47,7 @@ tr {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 230px;
+    width: 620px;
 }
 
 .loading {
@@ -69,6 +77,7 @@ tr {
 
 .avatarContainer {
     height: 35px;
+    width: 35px;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     border-left: 1px solid black;
@@ -85,11 +94,13 @@ tr {
 .avatar {
     height: 35px;
     width: 35px;
+    padding-left: 1px;
+    padding-right: 2px;
 }
 
 .rikishiLabel {
     height: 35px;
-    width: 100px;
+    width: 80px;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     border-right: 1px solid black;
@@ -100,7 +111,7 @@ tr {
 }
 
 .hoverable:hover {
-    background-color: rgba(0, 0, 0, 0.165);
+    background-color: rgba(0, 0, 0, 0.535);
     color: white;
 }
 
@@ -117,4 +128,94 @@ table {
     color: white;
     cursor: pointer;
     border-color: white;
+}
+
+.header {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-decoration: underline;
+}
+
+.currentRecord {
+    border: 1px solid black;
+    text-align: center;
+    width: 60px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+}
+
+.hoverable:hover > .currentRecord {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.win {
+    border: 1px solid rgb(0, 68, 17);
+    text-align: center;
+    width: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: rgba(1, 196, 7, 0.309);
+    color: rgb(8, 49, 0);
+    font-weight: bold;
+}
+
+.hoverable:hover > .win {
+    background-color: rgb(2, 136, 6);
+    color: rgb(114, 255, 114);
+    text-shadow: 1px 1px rgb(5, 94, 0);
+}
+
+.loss {
+    border: 1px solid rgb(68, 0, 0);
+    text-align: center;
+    width: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: rgba(196, 1, 11, 0.309);
+    color: rgb(49, 0, 2);
+    font-weight: bold;
+}
+
+.hoverable:hover > .loss {
+    background-color: rgba(196, 1, 11, 6);
+    color: rgb(255, 110, 110);
+    text-shadow: 1px 1px rgb(119, 0, 0);
+}
+
+.selected > .win {
+    color: rgb(0, 255, 0);
+}
+
+.selected > .loss {
+    color: rgb(255, 0, 0);
+}
+
+.selected > * {
+    font-weight: bold;
+}
+
+.tournamentContainer {
+    width: 70px;
+    border: 1px solid black;
+}
+
+.tournamentLabel {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tournamentRecord {
+    width: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.selectionTable {
+    width: 380px;
+    margin-right: auto;
+    margin-left: auto;
 }

@@ -1,7 +1,14 @@
 <div class="center">
-<h1>Pick your Team</h1>
+<h1 class="header">Your Team</h1>
 <ng-container *ngIf="this.ready else waiting">
     <table>
+        <tr>
+            <th colspan="3">Rikishi</th>
+            <th>Record</th>
+            <th colspan="3">Day 2</th>
+            <th colspan="3">Day 3</th>
+            <th colspan="3">Day 4</th>
+        </tr>
         <tr [ngClass]="{selected: cur.key===curSelected, hoverable: cur.key!==curSelected}" (click)="selectCategory(cur.key)" *ngFor="let cur of selected | keyvalue" >
             <td class="categoryLabel" >{{cur.key}}</td>
             <td class="pickYourRikishi" colspan="2" *ngIf="cur.value.rikishi===undefined">Pick Your Rikishi</td>
@@ -10,25 +17,60 @@
                 <div>{{cur.value.rikishi.Name}}</div>
                 <div>{{cur.value.rikishi.Rank}}</div>
             </td>
+            <td class="currentRecord">10-5</td>
+            <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
+            <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
+                <div>Rikishi</div>
+                <div>Maegashira 17</div>
+            </td>
+            <td class="win">W</td>
+            <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
+            <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
+                <div>Rikishi</div>
+                <div>Maegashira 17</div>
+            </td>
+            <td class="loss">L</td>
+            <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
+            <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
+                <div>Rikishi</div>
+                <div>Maegashira 17</div>
+            </td>
+            <td class="win">W</td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+            <td class="currentRecord">60-30</td>
         </tr>
     </table>
     <ng-container *ngIf="rikishis!=undefined && curSelected!='' else save">
-        <h1>Group {{curSelected}}</h1>
-        <table>
+        <hr/>
+        <h1>Select Rikishi for Group {{curSelected}}</h1>
+        <table class="selectionTable">
             <tr class="hoverable" (click)="selectRikishi(cur)" *ngFor="let cur of rikishis.get(curSelected)">
                 <td class="avatarContainer"><img class="avatar" src="{{cur.Avatar}}"></td>
                 <td class="rikishiLabel">
                     <div>{{cur.Name}}</div>
                     <div>{{cur.Rank}}</div>
                 </td>
+                <td class="tournamentContainer win">
+                    <div class="tournamentLabel">January '21</div>
+                    <div class="tournamentRecord">10-5</div>
+                </td>
+                <td class="tournamentContainer loss">
+                    <div class="tournamentLabel">November '20</div>
+                    <div class="tournamentRecord">5-10</div>
+                </td>
+                <td class="tournamentContainer win">
+                    <div class="tournamentLabel">September '20</div>
+                    <div class="tournamentRecord">8-7</div>
+                </td>
             </tr>
         </table>
     </ng-container>
     <ng-template #save>
         <div class="buttons">
-            <button *ngIf="this.changed" (click)="resetTeam()" class="saveButton">Reset</button>
-            <div class="buttonSpacer"></div>
-            <button *ngIf="this.changed" (click)="saveTeam()" class="saveButton">Save</button>
+            <div *ngIf="this.changed" (click)="resetTeam()" class="saveButton button">Reset</div>
+            <div *ngIf="this.changed" (click)="saveTeam()" class="saveButton button">Save</div>
         </div>
     </ng-template>
 </ng-container>
