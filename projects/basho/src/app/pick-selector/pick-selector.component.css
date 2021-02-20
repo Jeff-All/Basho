@@ -4,6 +4,7 @@ table {
 }
 
 h1 {
+    user-select: none;
     text-align: center;
 }
 
@@ -32,10 +33,16 @@ tr {
     width: 50px;
     border: 1px solid black;
     text-align: center;
+    user-select: none;
 }
 
 .button:hover {
     background-color: rgba(0, 0, 0, 0.138);
+}
+
+.button:active {
+    background-color: rgb(0, 0, 0);
+    color: white;
 }
 
 .saveButton {
@@ -50,12 +57,6 @@ tr {
     width: 620px;
 }
 
-.loading {
-    width: 150px;
-    height: 150px;
-    margin-right: 40px;
-    margin-left: 40px;
-}
 
 .selected > .categoryLabel {
     border-right: 1px solid white;
@@ -87,11 +88,12 @@ tr {
 }
 
 .selected > .avatarContainer > .avatar {
-
     filter:invert(1);
 }
 
 .avatar {
+    -webkit-user-drag: none;
+    user-select: none;
     height: 35px;
     width: 35px;
     padding-left: 1px;
@@ -131,6 +133,7 @@ table {
 }
 
 .header {
+    user-select: none;
     margin-top: 10px;
     margin-bottom: 10px;
     text-decoration: underline;
@@ -218,4 +221,29 @@ table {
     width: 380px;
     margin-right: auto;
     margin-left: auto;
+}
+
+.loadingContainer {
+    width: 250px;
+    height: 250px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.loading {
+    width: 250px;
+    height: 250px;
+}
+
+.savingContainer {
+    width: 30px;
+    height: 30px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.saving {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
 }

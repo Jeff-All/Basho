@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 
 import { Rikishi } from '../models/rikishi';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, flatMap, map, tap, mergeMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { ErrorService } from './error.service';
 
@@ -15,7 +15,29 @@ export class RikishiService {
   constructor(
     private http: HttpClient,
     private error: ErrorService
-  ) {}
+  ) {
+    this.http.get<any>(`${environment.dev.serverUrl}/rikishis`)
+      .pipe(
+        catchError(this.error.handleError<any>(<any>({})))
+      ).pipe(
+        map( response => {
+          for(let[key,value] of Object.entries<any>(response)) {
+            this.Rikishis.set(`${value.ID}`,value)
+          }
+          return this.Rikishis
+        })
+      ).subscribe( rikishis => {
+        this.Rikishis = rikishis;
+        this.Rikishis$.next(rikishis);
+      })
+  }
+
+  private Rikishis: Map<string,Rikishi> = new Map;
+  private Rikishis$: BehaviorSubject<Map<string,Rikishi>> = new BehaviorSubject( new Map<string,Rikishi>());
+  private CategorizedRikishisLoaded: boolean = false;
+  private CategorizedRikishis: Map<string,Rikishi[]> = new Map;
+  private Team: Map<string,Rikishi> = new Map;
+  private TeamLoaded: boolean = false;
 
   saveTeam(team: Map<string,Rikishi>) : Observable<boolean> {
     console.log("saveTeam:",team.entries())
@@ -39,22 +61,63 @@ export class RikishiService {
   }
 
   getTeam() : Observable<Map<string, Rikishi>> {
-    return this.http.get<any>(`${environment.dev.serverUrl}/teams`)
-    .pipe(
-      catchError(this.error.handleError<any>(<any>({})))
-    ).pipe(
-      map( response => {
-        var team = new Map<string, Rikishi>()
-        for(let[key,value] of Object.entries<any>(response)) {
-          value.Rank = "Maegashira 17";
-          team.set(key,<Rikishi>value)
-        }
-        return team
-      })
-    )
+    return this.getRikishi().pipe(
+      mergeMap(rikishis => {
+        return this.http.get<any>(`${environment.dev.serverUrl}/teams`)
+        .pipe(
+          catchError(this.error.handleError<any>(<any>({})))
+        ).pipe(
+          map(response => {
+            for(let[key,value] of Object.entries<any>(response)) {
+                var cur = rikishis.get(`${parseInt(value)}`);
+                if(cur === undefined) {
+                  console.error(`invalid rikishi id '${value}' found in team`)
+                } else {
+                  this.Team.set(key,cur)
+                }
+            }
+            this.TeamLoaded = true;
+            return this.Team;
+          }));
+      }));
+
+  }
+
+  getRikishi(): Observable<Map<string,Rikishi>> {
+    return this.Rikishis$.asObservable()
   }
 
   getCategorizedRikishi(): Observable<Map<string,Rikishi[]>> {
+    if(this.CategorizedRikishisLoaded) {
+      return new Observable<Map<string,Rikishi[]>>((observer) => {
+        observer.next(this.CategorizedRikishis)
+      })
+    } 
+    return this.getRikishi().pipe(
+      mergeMap(rikishis => {
+        return this.http.get<any>(`${environment.dev.serverUrl}/rikishis/categorized`)
+        .pipe(
+          catchError(this.error.handleError<any>(<any>({})))
+        ).pipe(
+          map(response => {
+            for(let[key,value] of Object.entries<any>(response)) {
+              var array = new Array<Rikishi>()
+              value.forEach((element: string) => {
+
+                var cur = rikishis.get(`${parseInt(element)}`);
+                if(cur === undefined) {
+                  console.error(`invalid rikishi id '${element}' found in categorized rikishis`)
+                } else {
+                  array.push(cur)
+                }
+              });
+              this.CategorizedRikishis.set(key,array)
+            }
+            this.CategorizedRikishisLoaded = true;
+            return this.CategorizedRikishis;
+          }));
+      }));
+
     return this.http.get<any>(`${environment.dev.serverUrl}/rikishis/categorized`)
     .pipe(
       catchError(this.error.handleError<any>(<any>({})))

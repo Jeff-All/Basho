@@ -28,6 +28,7 @@ import { environment } from './../environments/environment';
       httpInterceptor: {
         allowedList: [
           `${environment.dev.serverUrl}/teams`,
+          `${environment.dev.serverUrl}/rikishis`,
           `${environment.dev.serverUrl}/rikishis/categorized`
         ],
       },

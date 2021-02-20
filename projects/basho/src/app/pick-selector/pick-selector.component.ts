@@ -15,6 +15,7 @@ interface selectedRikishi {
 export class PickSelectorComponent implements OnInit {
   ready: boolean = false;
   changed: boolean = false;
+  saving: boolean = false;
   curSelected: string = "";
   teamLoaded: boolean = false;
   rikishiLoaded: boolean = false;
@@ -37,7 +38,9 @@ export class PickSelectorComponent implements OnInit {
 
   rikishis: Map<string,Rikishi[]> = new Map<string,Rikishi[]>()
 
-  constructor(private rikishiService: RikishiService) { }
+  constructor(private rikishiService: RikishiService) { 
+    console.log(`test:${this.saving}`);
+  }
 
   ngOnInit(): void {
     this.rikishiService.getTeam()
@@ -82,7 +85,7 @@ export class PickSelectorComponent implements OnInit {
   }
 
   saveTeam(): void {
-    this.ready = false;
+    this.saving = true;
     var map: Map<string,Rikishi> = new Map<string,Rikishi>();
     this.selected.forEach((value: selectedRikishi, key: string) => {
       if(value.rikishi === undefined) {
@@ -102,7 +105,7 @@ export class PickSelectorComponent implements OnInit {
         cur.rikishi = value.rikishi
       });
       this.determineIfChanged();
-      this.ready = true;
+      this.saving = false;
     })
   }
 

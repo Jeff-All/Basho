@@ -42,7 +42,20 @@
             <td class="currentRecord">60-30</td>
         </tr>
     </table>
-    <ng-container *ngIf="rikishis!=undefined && curSelected!='' else save">
+    <div class="buttons">
+        <ng-container *ngIf="this.changed">
+            <ng-container *ngIf="!this.saving else savingIcon">
+                <div (click)="resetTeam()" class="saveButton button">Reset</div>
+                <div (click)="saveTeam()" class="saveButton button">Save</div>
+            </ng-container>
+            <ng-template #savingIcon>
+                <div class="savingContainer">
+                    <img class="saving" src="/assets/loading.gif">
+                </div>
+            </ng-template>
+        </ng-container>
+    </div>
+    <ng-container *ngIf="rikishis!=undefined && curSelected!=''">
         <hr/>
         <h1>Select Rikishi for Group {{curSelected}}</h1>
         <table class="selectionTable">
@@ -67,14 +80,10 @@
             </tr>
         </table>
     </ng-container>
-    <ng-template #save>
-        <div class="buttons">
-            <div *ngIf="this.changed" (click)="resetTeam()" class="saveButton button">Reset</div>
-            <div *ngIf="this.changed" (click)="saveTeam()" class="saveButton button">Save</div>
-        </div>
-    </ng-template>
 </ng-container>
 <ng-template #waiting>
-    <img class="loading" src="/assets/loading.gif">
+    <div class="loadingContainer">
+        <img class="loading" src="/assets/loading.gif">
+    </div>
 </ng-template>
 </div>
