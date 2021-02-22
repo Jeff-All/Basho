@@ -5,37 +5,40 @@
         <tr>
             <th colspan="3">Rikishi</th>
             <th>Record</th>
-            <th colspan="3">Day 2</th>
-            <th colspan="3">Day 3</th>
-            <th colspan="3">Day 4</th>
+            <ng-container *ngIf="this.lastDay > 0">
+                <th colspan="3" *ngFor="let i of this.lastDayArray()"><div *ngIf="i > 0">Day {{i}}</div></th>
+            </ng-container>
         </tr>
         <tr [ngClass]="{selected: cur.key===curSelected, hoverable: cur.key!==curSelected}" (click)="selectCategory(cur.key)" *ngFor="let cur of selected | keyvalue" >
-            <td class="categoryLabel" >{{cur.key}}</td>
-            <td class="pickYourRikishi" colspan="2" *ngIf="cur.value.rikishi===undefined">Pick Your Rikishi</td>
-            <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
-            <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
-                <div>{{cur.value.rikishi.Name}}</div>
-                <div>{{cur.value.rikishi.Rank}}</div>
-            </td>
-            <td class="currentRecord">10-5</td>
-            <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
-            <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
-                <div>Rikishi</div>
-                <div>Maegashira 17</div>
-            </td>
-            <td class="win">W</td>
-            <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
-            <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
-                <div>Rikishi</div>
-                <div>Maegashira 17</div>
-            </td>
-            <td class="loss">L</td>
-            <td class="avatarContainer" *ngIf="cur.value.rikishi!==undefined"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
-            <td class="rikishiLabel" *ngIf="cur.value.rikishi!==undefined">
-                <div>Rikishi</div>
-                <div>Maegashira 17</div>
-            </td>
-            <td class="win">W</td>
+            <ng-container *ngIf="cur.value.rikishi!==undefined else rikishiUndefined">
+                <td class="categoryLabel" >{{cur.key}}</td>
+                <td class="avatarContainer"><img class="avatar" src="{{cur.value.rikishi.Avatar}}"></td>
+                <td class="rikishiLabel">
+                    <div>{{cur.value.rikishi.Name}}</div>
+                    <div>{{cur.value.rikishi.Rank}}</div>
+                </td>
+                <td class="currentRecord">{{cur.value.rikishi.Wins}}-{{cur.value.rikishi.Losses}}</td>
+                <ng-container *ngFor="let curMatch of cur.value.rikishi.DisplayMatches">
+                    <ng-container *ngIf="curMatch.Display === true else noMatch">
+                        <td class="avatarContainer"><img class="avatar" src="{{curMatch.Opponent.Avatar}}"></td>
+                        <td class="rikishiLabel">
+                            <div>{{curMatch.Opponent.Name}}</div>
+                            <div>{{curMatch.Opponent.Rank}}</div>
+                        </td>
+                        <ng-container *ngIf="curMatch.Concluded else TBD">
+                            <ng-container *ngIf="curMatch.Won else loss"><td class="win">W</td></ng-container>
+                            <ng-template #loss><td class="loss">L</td></ng-template>
+                        </ng-container>
+                        <ng-template #TBD><td class="tbd"></td></ng-template>
+                    </ng-container>
+                    <ng-template #noMatch>
+                        <td class="placeHolder" colspan="3">TBD</td>
+                    </ng-template>
+                </ng-container>
+            </ng-container>
+            <ng-template #rikishiUndefined>
+                <td class="pickYourRikishi" colspan="9" *ngIf="cur.value.rikishi===undefined">Pick Your Rikishi</td>
+            </ng-template>
         </tr>
         <tr>
             <td colspan="3"></td>

@@ -3,8 +3,11 @@ export interface Rikishi {
     Name: string;
     Rank: string;
     Avatar: string;
+    Wins: number;
+    Losses: number;
     Results: Result[];
-    Matches: Match[];
+    Matches: Map<number,Match>;
+    DisplayMatches: DisplayMatch[];
 }
 
 export interface Result {
@@ -14,9 +17,18 @@ export interface Result {
 }
 
 export interface Match {
-    Day: string;
-    Opponent: string;
-    Result: string;
+    Day: number;
+    Opponent: number;
+    Concluded: boolean;
+    Won: boolean;
+}
+
+export interface DisplayMatch {
+    Display: boolean;
+    Day: number;
+    Opponent: Rikishi;
+    Concluded: boolean;
+    Won: boolean;
 }
 
 export const DefaultRikishi = {

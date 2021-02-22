@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; 
 
-import { Rikishi } from '../models/rikishi';
+import { Rikishi, Match } from '../models/rikishi';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, flatMap, map, tap, mergeMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -22,7 +22,13 @@ export class RikishiService {
       ).pipe(
         map( response => {
           for(let[key,value] of Object.entries<any>(response)) {
-            this.Rikishis.set(`${value.ID}`,value)
+            console.log(`rikishis.set(${value.ID},${value})`, value.ID, value)
+            var m = new Map<number,Match>()
+            for(let[k,match] of Object.entries<Match>(value.Matches)) {
+              m.set(parseInt(k),match)
+            }
+            value.Matches = m
+            this.Rikishis.set(value.ID,value)
           }
           return this.Rikishis
         })
@@ -32,8 +38,8 @@ export class RikishiService {
       })
   }
 
-  private Rikishis: Map<string,Rikishi> = new Map;
-  private Rikishis$: BehaviorSubject<Map<string,Rikishi>> = new BehaviorSubject( new Map<string,Rikishi>());
+  private Rikishis: Map<number,Rikishi> = new Map;
+  private Rikishis$: BehaviorSubject<Map<number,Rikishi>> = new BehaviorSubject( new Map<number,Rikishi>());
   private CategorizedRikishisLoaded: boolean = false;
   private CategorizedRikishis: Map<string,Rikishi[]> = new Map;
   private Team: Map<string,Rikishi> = new Map;
@@ -69,7 +75,7 @@ export class RikishiService {
         ).pipe(
           map(response => {
             for(let[key,value] of Object.entries<any>(response)) {
-                var cur = rikishis.get(`${parseInt(value)}`);
+                var cur = rikishis.get(parseInt(value));
                 if(cur === undefined) {
                   console.error(`invalid rikishi id '${value}' found in team`)
                 } else {
@@ -83,7 +89,11 @@ export class RikishiService {
 
   }
 
-  getRikishi(): Observable<Map<string,Rikishi>> {
+  getRikishiByKey(key: number): any {
+    return this.Rikishis.get(key)
+  }
+
+  getRikishi(): Observable<Map<number,Rikishi>> {
     return this.Rikishis$.asObservable()
   }
 
@@ -103,8 +113,8 @@ export class RikishiService {
             for(let[key,value] of Object.entries<any>(response)) {
               var array = new Array<Rikishi>()
               value.forEach((element: string) => {
-
-                var cur = rikishis.get(`${parseInt(element)}`);
+                console.log("rikishis:", rikishis)
+                var cur = rikishis.get(parseInt(element));
                 if(cur === undefined) {
                   console.error(`invalid rikishi id '${element}' found in categorized rikishis`)
                 } else {

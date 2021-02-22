@@ -1,5 +1,6 @@
+import { stringify } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
-import { DefaultRikishi, Rikishi } from '../models/rikishi';
+import { DefaultRikishi, Match, Rikishi, DisplayMatch } from '../models/rikishi';
 import { RikishiService } from '../services/rikishi.service';
 
 interface selectedRikishi {
@@ -19,6 +20,7 @@ export class PickSelectorComponent implements OnInit {
   curSelected: string = "";
   teamLoaded: boolean = false;
   rikishiLoaded: boolean = false;
+  lastDay: number = 0;
 
   team: Map<string,selectedRikishi> = new Map([
     ["A", <selectedRikishi>({})],
@@ -70,6 +72,7 @@ export class PickSelectorComponent implements OnInit {
     if(this.rikishiLoaded && this.teamLoaded) {
       this.ready = true;
     }
+    this.determineIfChanged()
     console.log(`determineWaiting(rikishi=${this.rikishiLoaded},team=${this.teamLoaded}):`,this.ready)
   }
 
@@ -110,6 +113,7 @@ export class PickSelectorComponent implements OnInit {
   }
 
   determineIfChanged(): boolean {
+    var lastDay:number = 0;
     var dif:boolean = false;
     this.team.forEach((value: selectedRikishi, key: string) => {
       var curSelected = this.selected.get(key) ?? <selectedRikishi>{}
@@ -118,9 +122,65 @@ export class PickSelectorComponent implements OnInit {
         console.log("determineIfChanged: DIF: selected:", curSelected.rikishi)
         console.log("determineIfChanged: DIF: team:", value.rikishi)
       }
+      var curRikishi = curSelected.rikishi
+      if(curRikishi !== undefined) {
+        curRikishi.Matches.forEach((match: Match, key: number) => {
+          console.log("match.Day", match.Day)
+          if(lastDay < match.Day) {
+            lastDay = match.Day
+          }
+        });
+      }
     })
+    this.lastDay = lastDay;
+    this.setupDisplayMatches()
     this.changed = dif;
     return dif;
+  }
+
+  lastDayArray(): Array<number> {
+    var arr = new Array<number>(Math.min(3,this.lastDay))
+    var j = Math.min(this.lastDay-1,2)
+    for(var i=0;i<Math.min(this.lastDay,3);i++) {
+      arr[i] = this.lastDay - j;
+      j--
+    }
+    return arr
+  }
+
+  setupDisplayMatches(): void {
+    
+    if(this.lastDay === 0) {return}
+
+    this.team.forEach((value: selectedRikishi, key: string) => {
+      var curSelected = this.selected.get(key) ?? <selectedRikishi>{}
+      var curRikishi = curSelected.rikishi
+      if(curRikishi !== undefined ) {
+        curRikishi.DisplayMatches = new Array<DisplayMatch>()
+        console.log("setupDisplayMatches",curRikishi.DisplayMatches)
+        var j = this.lastDay;
+        for (var i = Math.min(2,this.lastDay-1); i >= 0; i--) {
+          if(j > 0) {
+            
+            var curMatch = curRikishi.Matches.get(j)
+            
+            if(curMatch != undefined) {
+              curRikishi.DisplayMatches[i] = <DisplayMatch>({
+                Display: true,
+                Day: curMatch.Day,
+                Opponent: this.rikishiService.getRikishiByKey(curMatch.Opponent),
+                Concluded: curMatch.Concluded,
+                Won: curMatch.Won
+              })
+            } else {
+              curRikishi.DisplayMatches[i] = <DisplayMatch>({Display: false})
+            }
+            console.log("setupDisplayMatches",i,j,curMatch,curRikishi.DisplayMatches)
+            j--;
+          }
+        }
+      }
+    })
   }
 
   selectCategory(category: string): void {
