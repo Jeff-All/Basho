@@ -12,8 +12,8 @@ export interface Rikishi {
 
 export interface Result {
     Tournament: string;
-    Wins: string;
-    Losses: string;
+    Wins: number;
+    Losses: number;
 }
 
 export interface Match {

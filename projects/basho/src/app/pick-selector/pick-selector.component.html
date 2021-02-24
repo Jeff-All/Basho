@@ -68,18 +68,12 @@
                     <div>{{cur.Name}}</div>
                     <div>{{cur.Rank}}</div>
                 </td>
-                <td class="tournamentContainer win">
-                    <div class="tournamentLabel">January '21</div>
-                    <div class="tournamentRecord">10-5</div>
-                </td>
-                <td class="tournamentContainer loss">
-                    <div class="tournamentLabel">November '20</div>
-                    <div class="tournamentRecord">5-10</div>
-                </td>
-                <td class="tournamentContainer win">
-                    <div class="tournamentLabel">September '20</div>
-                    <div class="tournamentRecord">8-7</div>
-                </td>
+                <ng-container *ngFor="let curResult of cur.Results">
+                    <td [ngClass]="{tournamentContainer: true, win: curResult.Wins > curResult.Losses, loss: curResult.Losses > curResult.Wins}">
+                        <div class="tournamentLabel">{{curResult.Tournament}}</div>
+                        <div class="tournamentRecord">{{curResult.Wins}}-{{curResult.Losses}}</div>
+                    </td>
+                </ng-container>
             </tr>
         </table>
     </ng-container>

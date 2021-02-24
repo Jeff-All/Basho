@@ -103,6 +103,7 @@ tr {
 .rikishiLabel {
     height: 35px;
     width: 80px;
+    max-width: 80px !important;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     border-right: 1px solid black;
@@ -235,7 +236,7 @@ table {
 }
 
 .selectionTable {
-    width: 380px;
+    width: auto;
     margin-right: auto;
     margin-left: auto;
 }
