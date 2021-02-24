@@ -21,6 +21,8 @@ export class PickSelectorComponent implements OnInit {
   teamLoaded: boolean = false;
   rikishiLoaded: boolean = false;
   lastDay: number = 0;
+  wins: number = 0;
+  losses: number = 0;
 
   team: Map<string,selectedRikishi> = new Map([
     ["A", <selectedRikishi>({})],
@@ -113,6 +115,8 @@ export class PickSelectorComponent implements OnInit {
   }
 
   determineIfChanged(): boolean {
+    var wins:number = 0;
+    var losses:number = 0;
     var lastDay:number = 0;
     var dif:boolean = false;
     this.team.forEach((value: selectedRikishi, key: string) => {
@@ -126,12 +130,21 @@ export class PickSelectorComponent implements OnInit {
       if(curRikishi !== undefined) {
         curRikishi.Matches.forEach((match: Match, key: number) => {
           console.log("match.Day", match.Day)
+          if(match.Concluded) {
+            if(match.Won) {
+              wins++
+            } else {
+              losses++
+            }
+          }
           if(lastDay < match.Day) {
             lastDay = match.Day
           }
         });
       }
     })
+    this.wins = wins;
+    this.losses = losses;
     this.lastDay = lastDay;
     this.setupDisplayMatches()
     this.changed = dif;
