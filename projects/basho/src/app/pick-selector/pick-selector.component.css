@@ -89,10 +89,6 @@ tr {
     border-left: 1px solid white;
 }
 
-.selected > .avatarContainer > .avatar {
-    filter:invert(1);
-}
-
 .avatar {
     -webkit-user-drag: none;
     user-select: none;
